@@ -1,9 +1,11 @@
 # AI-Augmented Research
+**instats Seminar — August 10, 11, and 12, 2026**
+**Instructor:** Moses Boudourides, Data Science Graduate Program, School of Professional Studies, Northwestern University
 
-**A Three-Day Academic Seminar — August 10–12, 2026**
+> ### 📋 Registration
+> **[Register now at instats.org](https://instats.org)**
 
-**Instructor:** Moses Boudourides, Data Science Graduate Program,
-School of Professional Studies, Northwestern University
+[![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)](https://ai-augmented-research.streamlit.app) [Streamlit App](https://ai-augmented-research.streamlit.app)
 
 ---
 
