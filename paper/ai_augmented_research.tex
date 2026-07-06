@@ -1,0 +1,469 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{natbib}
+\usepackage{microtype}
+\usepackage{parskip}
+\setlength{\parskip}{0.5em}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=blue,
+  urlcolor=teal
+}
+
+\definecolor{boxgray}{RGB}{245,245,245}
+\definecolor{nupurple}{RGB}{78,42,132}
+
+\title{\textbf{AI-Augmented Research: A Framework for Scholarly Judgement and Responsible Practice}}
+\author{Moses Boudourides \\ \textit{Graduate Program on Data Science} \\ \textit{Northwestern University} \\ \href{mailto:Moses.Boudourides@northwestern.edu}{\texttt{Moses.Boudourides@northwestern.edu}}}
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The integration of Artificial Intelligence into the academic research lifecycle has accelerated beyond narrow data analysis to encompass question formation, literature synthesis, methodological planning, computational workflows, and scholarly writing. This position paper argues that AI literacy for academic researchers is fundamentally a \textit{judgement problem}, not a tooling-skills problem. Drawing on the competency framework for responsible AI in academic research \citep{zyphur2026responsible}, we propose a structured approach to human-AI collaboration in scientific discovery, organized around two foundational distinctions: the demarcation between labour tasks and judgement tasks, and the difference between discovery activities and verification activities. Through a comprehensive review of the current AI ecosystem---including Large Language Models (LLMs), retrieval-augmented generation (RAG) systems, reasoning models, and autonomous research agents---we examine the methodological implications of AI assistance at each stage of the research workflow. We address critical failure modes, including citation hallucination, algorithmic sycophancy, and LLM non-determinism, arguing that these are structural properties requiring rigorous verification disciplines rather than mere technical bugs. We further examine the profound implications of AI for computational reproducibility, proposing a minimum documentation standard for AI-mediated research. Finally, we analyze the ethical boundaries of authorship, the evolving landscape of institutional and publisher policies, and the future directions of human-AI collaboration in scientific discovery. The paper concludes that the researcher's non-delegable intellectual authority remains the core of valid scientific inquiry in an AI-augmented environment, and that the transition from programming expertise to validity reasoning represents the defining methodological challenge of contemporary research training.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+%% ============================================================
+\section{Introduction}
+%% ============================================================
+
+The integration of Artificial Intelligence into scholarly communication and scientific discovery has reached an inflection point. AI is no longer confined to the specialized domain of computational data analysis; it now touches every stage of the research lifecycle. From the initial formulation of research questions and the synthesis of vast literatures to the execution of complex analytical workflows and the drafting of manuscripts, AI systems are reshaping how knowledge is produced and evaluated \citep{zhang2025exploring, shi2026survey}. Recent surveys indicate that a substantial proportion of academic researchers now use AI tools not only for writing and coding but also for peer review and manuscript evaluation \citep{nature2025peerreview, hai2024llmresearch}. A 2024 analysis of computer science publications estimated that approximately 17.5\% of submitted papers contained AI-assisted content, and a parallel analysis found that 16.9\% of peer review text showed similar markers \citep{hai2024llmresearch}.
+
+However, the rapid adoption of these technologies has outpaced the development of robust methodological frameworks and institutional policies. Researchers are increasingly confronted with a fundamental question: \textit{What should the researcher decide, and what can AI safely assist with?} This paper argues that addressing this question requires a shift in focus from the technical capabilities of AI tools to the scholarly responsibilities of the human researcher. As \citet{zyphur2026responsible} posits in the \textit{Responsible AI in Academic Research} competency framework, AI literacy at the doctoral and faculty level is fundamentally a judgement problem, not a tooling-skills problem. The relevant competencies are not the ability to operate specific software but the ability to reason about validity, to detect failure modes, and to maintain intellectual authority over the research process.
+
+This position paper outlines a comprehensive framework for AI-augmented research, structured around the premise that the barrier to sophisticated computational research has shifted from programming expertise to validity reasoning. We begin by examining the current AI ecosystem and the cognitive dynamics of human-AI collaboration. We then trace the application of AI across the research lifecycle, distinguishing between its role in early-stage discovery and its limitations in rigorous verification. Subsequent sections address the specific challenges of AI-mediated data workflows, including the profound implications of LLM non-determinism for computational reproducibility. We then examine the ethical boundaries of authorship and the evolving landscape of institutional policies, proposing actionable standards for transparency and accountability. The paper concludes with a discussion of future directions and the enduring role of human scholarly judgement in an AI-augmented research environment.
+
+The paper is organized as follows. Section~2 examines the cognitive architecture of AI-augmented research, including the AI ecosystem, the labour-versus-judgement demarcation, and the cognitive partner model. Section~3 traces AI's role in the early-stage research lifecycle, covering question development, literature discovery, and research design. Section~4 addresses AI-mediated computational workflows, including data collection, cleaning, analysis, and the non-determinism problem. Section~5 examines scholarly communication, peer review, and the authorship boundary. Section~6 analyzes the institutional and publisher policy landscape. Section~7 discusses future directions and the long-term trajectory of human-AI collaboration in science. Section~8 concludes.
+
+%% ============================================================
+\section{The Cognitive Architecture of AI-Augmented Research}
+%% ============================================================
+
+To engage responsibly with AI, researchers must first understand the nature of the tools they are using. The contemporary AI ecosystem is not a monolith but a diverse family of systems, each with distinct capabilities, strengths, and failure modes. The choice of which system to use for a given task is not a mere technical preference; it is a methodological decision with direct consequences for the validity and reproducibility of the research \citep{blau2024protecting}.
+
+\subsection{The AI Ecosystem: Tool Selection as Methodological Choice}
+
+The current landscape of AI tools available to researchers can be broadly categorized into several system types, each suited to different tasks and carrying different risks.
+
+\textbf{General Large Language Models (LLMs)} such as GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro are trained on vast corpora of text and excel at broad language tasks, including drafting, summarizing, and brainstorming. However, their unconstrained generative nature makes them highly susceptible to hallucination---the generation of plausible-sounding but factually incorrect content---and to sycophancy, the tendency to agree with the user's framing regardless of its validity \citep{walters2023fabrication, sharma2026algorithmic}.
+
+\textbf{Reasoning Models} such as OpenAI's o3 and Google's Gemini Thinking are designed for multi-step logical inference and complex problem decomposition. They are slower and more computationally expensive than general LLMs but are better suited for method selection, adversarial critique, and tasks requiring extended chains of reasoning. Their outputs are generally more reliable for analytical tasks, though they remain susceptible to the same structural failure modes as general LLMs.
+
+\textbf{Retrieval-Augmented Generation (RAG) Systems} such as Elicit, Consensus, Semantic Scholar's AI features, and NotebookLM ground their generation in a specific, verified corpus of literature. By linking claims directly to source documents and providing verifiable citations, RAG systems dramatically reduce hallucination rates and are the preferred tools for literature discovery and synthesis \citep{li2025enhancing}. The key distinction is that RAG systems operate in a constrained generation space; they can only cite documents that exist in their index.
+
+\textbf{Multimodal Systems} capable of processing text, images, audio, and structured data simultaneously are increasingly used for extracting data from complex PDFs, analyzing visual research materials, and generating figures and diagrams. Their outputs require careful verification for accuracy, particularly when interpreting quantitative data.
+
+\textbf{Autonomous AI Agents} represent the frontier of the AI ecosystem. These systems can execute multi-step research workflows independently, from data collection and literature retrieval to analysis and report generation \citep{nature2025agents, gottweis2026coscientist}. While offering significant efficiency gains, autonomous agents pose severe challenges for verification and reproducibility because each autonomous step introduces a potential error that the researcher may not directly observe.
+
+The appropriate selection of tools requires an understanding of the specific task requirements. For instance, using a general LLM for literature retrieval often results in fabricated citations, whereas using a RAG system constrains the output to verifiable sources. The researcher who selects a tool without understanding its underlying architecture and failure modes has made an undisclosed methodological decision that compromises the integrity of the research. This is why tool selection must be treated as a methodological choice, documented and justified in the same way that statistical software selection is documented in quantitative research.
+
+\begin{table}[ht]
+\centering
+\caption{AI System Types, Primary Uses, and Key Failure Modes}
+\label{tab:ecosystem}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{System Type} & \textbf{Primary Research Uses} & \textbf{Key Failure Modes} \\
+\midrule
+General LLM & Drafting, brainstorming, summarizing & Hallucination, sycophancy, non-determinism \\
+Reasoning Model & Method selection, adversarial critique & Slower; still susceptible to hallucination \\
+RAG System & Literature discovery, citation retrieval & Coverage gaps; index currency \\
+Multimodal System & Figure analysis, PDF extraction & Quantitative misinterpretation \\
+Autonomous Agent & Multi-step workflows, data pipelines & Compounding errors; opacity; reproducibility \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The Labour-versus-Judgement Demarcation}
+
+A foundational principle of responsible AI use is the demarcation between labour tasks and judgement tasks \citep{zyphur2026responsible}. This distinction determines where AI can be safely deployed and where human intellectual authority must remain absolute.
+
+\textbf{Labour tasks} are rule-based, routine, and highly verifiable. Examples include formatting citations to APA style, transcribing interview recordings, generating boilerplate code, extracting structured data from standardized forms, and converting file formats. These tasks can be safely augmented or fully delegated to AI, provided the outputs are subjected to appropriate verification protocols. The key characteristic of a labour task is that its correctness can be assessed against an objective standard without requiring domain expertise.
+
+\textbf{Judgement tasks}, conversely, require domain expertise, theoretical understanding, and scholarly accountability. Examples include framing the research question, deciding which covariates to include in a statistical model, interpreting a null result, evaluating the substantive merit of a peer reviewer's critique, and determining whether a finding has theoretical significance for the field. Judgement tasks define the scholarly core of the research. While AI can assist by surfacing options, generating candidate arguments, or playing devil's advocate, the final decision and the responsibility for its consequences must remain entirely with the human researcher.
+
+Misclassifying a judgement task as a labour task is the most common and consequential error in AI-augmented research practice. When a researcher allows an AI to determine the theoretical significance of a finding, select the appropriate statistical model, or decide which observations to exclude from analysis, they have delegated a judgement task. The result may appear valid but lacks the scholarly authority that comes from a human researcher who can independently defend every methodological choice. \citet{zyphur2026responsible} refers to this as the ``substitution error''---using AI to substitute for the researcher's intellectual authority rather than to augment it.
+
+\subsection{Thinking with AI: The Cognitive Partner Model}
+
+The conventional framing of AI as a mere ``idea generator'' or advanced search engine understates its potential and misrepresents its risks. A more accurate and productive framing is to view AI as a \textit{cognitive partner}---a system that can extend the researcher's thinking in structured ways \citep{wieland2022electronic, memmert2025effect}.
+
+In this model, human-AI collaboration takes several productive forms. In \textbf{brainstorming and divergent thinking}, AI can rapidly generate a wide range of candidate ideas, hypotheses, or methodological approaches, expanding the researcher's option space beyond their immediate disciplinary constraints. This is particularly valuable in the early stages of a project, when the researcher is still scoping the problem and has not yet committed to a specific theoretical framework.
+
+In \textbf{analogy-finding}, AI excels at pattern matching across vast, disparate domains, proposing cross-disciplinary analogies that might elude a specialized human researcher. A sociologist studying organizational resilience might benefit from AI-surfaced analogies with ecological resilience theory or engineering redundancy systems---connections that would require extensive cross-disciplinary reading to discover independently.
+
+In \textbf{assumption-challenging}, the researcher presents a proposed research design and asks the AI to identify unstated assumptions in the theoretical framework or methodological approach. This is a particularly valuable use because it leverages the AI's breadth of exposure to diverse theoretical traditions, helping the researcher to identify blind spots before investing significant effort in data collection.
+
+In \textbf{adversarial critique (devil's advocate)}, the researcher presents an argument and the AI is instructed to construct the strongest possible counterargument. This helps to identify vulnerabilities in the reasoning before peer review and is a specific instance of the ``Validator mode'' described by \citet{zyphur2026responsible}.
+
+However, this cognitive partnership introduces a profound risk: \textbf{algorithmic sycophancy}. Sycophancy occurs when an AI system excessively agrees with the user's framing, reinforces existing beliefs, and produces outputs that feel validating but lack objective rigor \citep{sharma2026algorithmic, stanford2026sycophantic}. Because LLMs are optimized for human preference and helpfulness through reinforcement learning from human feedback (RLHF), they tend to align with the premises embedded in the user's prompt, even when those premises are flawed. A researcher who asks ``Is my hypothesis that X causes Y supported by the literature?'' is more likely to receive an affirmative response than one who asks ``What does the literature say about the relationship between X and Y?'' The former prompt embeds an assumption that the AI is inclined to validate.
+
+Sycophancy is arguably a more dangerous failure mode than hallucination because it is harder to detect; an agreeable AI output feels correct. The necessary verification discipline is to recognize that \textit{AI agreement is not evidence}. Researchers must actively employ sycophancy detection strategies, including adversarial prompting (explicitly instructing the AI to disagree and identify weaknesses), model heterogeneity (running the same query through models from different AI families to see if the agreement persists), and independent verification against primary sources.
+
+%% ============================================================
+\section{AI in the Early-Stage Research Lifecycle}
+%% ============================================================
+
+The application of AI in the early stages of research---question development, literature discovery, and research design---highlights the critical distinction between discovery activities and verification activities.
+
+\subsection{The Discovery-versus-Verification Distinction}
+
+The research process constantly oscillates between discovery and verification. \textbf{Discovery} involves generating possibilities, exploring literature, proposing methods, and surfacing analogies. Here, AI adds immense value through its speed and breadth; it can survey a literature in minutes that would take a researcher weeks to cover manually. \textbf{Verification} involves checking references, validating claims, reproducing computations, and finding inconsistencies. Here, human judgement is paramount, and AI assistance requires careful management.
+
+The root of most AI-related research integrity failures lies in conflating the two: treating AI-generated outputs from the discovery phase as verified findings without applying the necessary rigorous checks. A researcher who uses Elicit to identify relevant papers (discovery) and then cites those papers without reading them (failure to verify) has not merely been careless; they have violated the fundamental scholarly norm that authors are responsible for the accuracy of their citations \citep{cope2023authorship}.
+
+This distinction also has implications for how AI outputs should be reported. Discovery activities can be reported as part of the research process (``We used Elicit to identify an initial set of candidate papers, which were then screened manually''), while verification activities must be reported as methodological choices with documented outcomes (``All AI-generated citations were verified against the primary source; N citations were found to be inaccurate and were removed'').
+
+\subsection{Research Question Development and Prompt Discipline}
+
+While AI can assist in scoping a research question by identifying what has already been asked or suggesting ways to improve precision and testability, it cannot determine whether a question is worth asking or what its answer means for the field. The researcher's intellectual authority begins at the question. A research question generated entirely by AI, without the researcher's independent theoretical judgement, is not a scholarly contribution; it is a machine output with a human signature.
+
+Crucially, the interaction with AI during this phase relies on prompts. The choice of prompt is a \textit{researcher degree of freedom}, analogous to analytic choices in quantitative research that can lead to p-hacking and false positives \citep{simmons2011false}. Different prompts to the same model on the same topic can yield substantively different literature scopes, methodological suggestions, or theoretical framings. A researcher who iterates through multiple prompts until they find one that produces the desired framing has engaged in a form of confirmation bias that is methodologically analogous to selective reporting.
+
+Therefore, prompt discipline is essential. Researchers must document the exact prompt text, the model used, the model version, and the date, treating the prompt as a formal methodological choice. Where multiple prompts were tried, the researcher should report this and explain the basis for selecting the final prompt. This documentation standard is not merely a transparency requirement; it is a reproducibility requirement, because the same prompt applied to a different model version or on a different date may produce substantially different outputs.
+
+\subsection{Literature Discovery, Exploration, and Synthesis}
+
+Literature discovery is one of the most productive applications of AI in research, and also one of the most hazardous if not managed carefully. The hazard is citation hallucination---the generation of plausible-sounding but non-existent references. Studies have shown hallucination rates ranging from 18\% in advanced models to over 55\% in older iterations when asked to generate citations \citep{walters2023fabrication}. A 2026 analysis in \textit{Nature} estimated that tens of thousands of 2025 publications may contain invalid AI-generated references, representing a significant threat to the integrity of the scientific literature \citep{nature2026hallucination}.
+
+This necessitates a non-negotiable rule: \textit{Every AI-generated citation must be verified against the primary source before use.} Verification means confirming that the paper exists (DOI lookup), that the abstract matches the claimed content, and that the specific claim attributed to the paper is actually present in the paper. This three-step verification protocol is the minimum standard for responsible use of AI in literature work.
+
+To mitigate the hallucination risk, literature discovery should rely on RAG systems rather than general-purpose chat interfaces. By grounding outputs in a verified corpus and providing direct links to source documents, RAG systems make verification tractable \citep{li2025enhancing}. Tools such as Elicit, Consensus, and Semantic Scholar's AI features are designed for this purpose and represent a significant improvement over using general LLMs for literature retrieval.
+
+For literature synthesis, AI can assist in identifying thematic clusters, summarizing arguments, and mapping the intellectual landscape of a field. However, the synthesis itself---the identification of what is known, what is contested, and what is unknown---requires the researcher's domain expertise and theoretical judgement. An AI-generated synthesis is a starting point for the researcher's own analysis, not a substitute for it.
+
+\subsection{Research Design, Methodological Planning, and Visual Communication}
+
+In research design, AI can serve in what \citet{zyphur2026responsible} calls the ``Tutor mode,'' explaining unfamiliar methods, comparing design options, and identifying potential threats to validity. A researcher unfamiliar with structural equation modeling can use AI to understand the assumptions, requirements, and limitations of the method before deciding whether it is appropriate for their research question. However, the researcher must be able to independently explain and defend every methodological choice; AI assistance does not transfer methodological authority.
+
+The Tutor mode is particularly valuable for interdisciplinary researchers who need to engage with methods from adjacent fields. A sociologist using computational text analysis, or a psychologist using network analysis, can use AI to develop sufficient methodological literacy to make informed design decisions without necessarily becoming an expert in the method. This is a genuine democratization of methodological access, but it comes with the responsibility to verify that the AI's explanations are accurate and that the chosen method is genuinely appropriate for the research question.
+
+AI tools are also increasingly used for visual communication in research, generating conceptual diagrams, data figures, workflow charts, and presentation materials \citep{arxiv2026figures}. While these tools democratize high-quality design, they carry methodological risks. A figure that misrepresents a theoretical model or distorts data is a validity problem, not merely an aesthetic one. Researchers must ensure that AI-generated figures accurately represent the underlying data or theoretical model, are reproducible from the description provided, and comply with journal disclosure policies. The accuracy of a figure is a scholarly responsibility, regardless of whether it was produced by the researcher or by an AI tool.
+
+%% ============================================================
+\section{AI-Mediated Computational Workflows}
+%% ============================================================
+
+Perhaps the most profound shift brought about by AI is in computational research. Increasingly sophisticated AI systems allow researchers to perform complex data collection, cleaning, analysis, and visualization through natural-language interaction, without requiring programming expertise. This shift has significant implications for who can conduct computational research and what methodological standards apply.
+
+\subsection{From Programming Expertise to Validity Reasoning}
+
+The barrier to entry for computational research has fundamentally changed. It is no longer defined primarily by the ability to write code but by \textit{validity reasoning}---the ability to direct, verify, and critically assess what AI-mediated tools produce. This shift is both an opportunity and a risk. The opportunity is that researchers from disciplines without strong computational traditions can now engage meaningfully with computational methods. The risk is that the opacity of AI-mediated computation may obscure methodological choices that would be visible in explicit code.
+
+When a researcher uses an AI agent to clean a dataset---for example, imputing missing values, removing outliers, or standardizing variable names---the AI is making methodological assumptions about the data-generating process. The researcher cannot simply accept the ``cleaned'' output; they must understand, endorse, and document each assumption. What imputation method was used? What threshold was applied for outlier removal? These are not technical details; they are methodological choices that affect the validity of the analysis.
+
+Similarly, when using AI for text annotation or qualitative coding, the AI acts as a coder, not an authority. The researcher must specify the annotation scheme, manually code a validation sample, and report the inter-rater reliability between the AI and human coding \citep{grimmer2022text}. Reporting only that ``AI was used to code the data'' without these validation steps is methodologically equivalent to reporting that ``a research assistant coded the data'' without reporting inter-rater reliability.
+
+\subsection{AI-Assisted Data Collection and Information Extraction}
+
+AI tools are increasingly used for data collection tasks that previously required either manual effort or specialized programming skills. These include web scraping and structured data extraction, PDF parsing and table extraction, named entity recognition and relation extraction from unstructured text, and audio transcription and translation.
+
+For each of these tasks, the researcher must apply a verification protocol appropriate to the specific failure modes of the tool. For web scraping, the researcher must verify that the extracted data matches the source and that the scraping did not introduce systematic biases (e.g., by failing to capture certain types of content). For text extraction, the researcher must verify that the extracted entities and relations are accurate and that the extraction did not introduce systematic errors (e.g., by misidentifying entities in ambiguous contexts).
+
+The structured failure-mode report, described in Section~4.4, provides a framework for documenting these verification steps. The key principle is that the researcher must be able to characterize the error rate of the AI-assisted data collection process and explain how errors were identified and resolved.
+
+\subsection{Data Cleaning, Organization, and Annotation}
+
+Data cleaning is one of the most time-consuming and error-prone stages of the research workflow, and AI can provide significant assistance. However, data cleaning decisions are methodological choices with direct consequences for the validity of the analysis. The researcher must document every cleaning decision, including the rationale for each choice and the number of observations affected.
+
+For annotation tasks, AI tools can dramatically accelerate the coding of large text corpora, interview transcripts, or image datasets. The appropriate workflow is:
+
+\begin{enumerate}
+    \item Develop a detailed annotation scheme with clear definitions and examples for each category.
+    \item Apply the annotation scheme to a random sample of the data manually, establishing a human-coded gold standard.
+    \item Apply the AI annotation tool to the same sample and compute inter-rater reliability (e.g., Cohen's $\kappa$ or Krippendorff's $\alpha$).
+    \item If reliability is acceptable, apply the AI annotation to the full dataset.
+    \item Report the inter-rater reliability, the size of the validation sample, and any systematic discrepancies between human and AI coding.
+\end{enumerate}
+
+This workflow treats the AI as a coder subject to the same reliability standards as a human coder, which is the appropriate methodological standard \citep{grimmer2022text}.
+
+\subsection{The Non-Determinism Problem and Computational Reproducibility}
+
+A critical challenge in AI-mediated computational workflows is the structural non-determinism of LLMs. Even when temperature is set to zero---the parameter that controls the randomness of the output---parallel floating-point arithmetic in GPU inference can cause the same prompt to produce different outputs on different runs \citep{ouyang2025empirical, rover2026same}. This non-determinism is not a bug that will be fixed in future model versions; it is a structural property of the hardware and software architecture underlying LLM inference.
+
+Non-determinism threatens the foundational scientific norm of computational reproducibility. If an independent researcher cannot re-run the analysis and obtain the same results, the credibility of the research is compromised. This is a well-recognized problem in computational science \citep{kosch2024risk}, but AI-mediated research amplifies it in several ways. First, LLM outputs are more sensitive to small input variations than traditional computational tools. Second, model versions change frequently, and the same model name (e.g., ``GPT-4'') may refer to different underlying models at different points in time. Third, the training data of LLMs is opaque, making it impossible to fully characterize the knowledge base from which the model is drawing.
+
+To address these challenges, AI-mediated analysis requires a new documentation standard:
+
+\begin{enumerate}
+    \item \textbf{Version Locking:} Specify the exact model name and version (e.g., \texttt{gpt-4o-2025-01-01}), not just the generic family name. Where possible, use API endpoints that allow version pinning.
+    \item \textbf{Parameter Specification:} Report temperature, top-p, and random seed (where available).
+    \item \textbf{Prompt Documentation:} Provide the full, verbatim prompt text, including any system prompts.
+    \item \textbf{Re-run Stability Testing:} Run the same prompt multiple times (at least three) and report whether the outputs are substantively identical or characterize the degree of variance.
+    \item \textbf{Output Logging:} Save and make available the full AI outputs and intermediate datasets as supplementary materials.
+    \item \textbf{Fallback Documentation:} If the specific model version is no longer available at the time of replication, document this and provide the full prompt for attempted replication with the closest available version.
+\end{enumerate}
+
+\begin{table}[ht]
+\centering
+\caption{Proposed Documentation Standard for AI-Mediated Computational Steps}
+\label{tab:documentation}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Documentation Element} & \textbf{Description} \\
+\midrule
+Model specification & Exact model name, version, provider, and date of access \\
+Parameter specification & Temperature, top-p, seed (where available) \\
+Prompt documentation & Full verbatim prompt text, including system prompt \\
+Re-run stability test & Results of running the same prompt 3--5 times \\
+Output logging & Full outputs or representative sample; intermediate datasets \\
+Fallback documentation & Note if version is unavailable; provide prompt for replication \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Structured Failure-Mode Reporting}
+
+Responsible AI use does not mean avoiding errors entirely; it means systematically detecting and managing them. \citet{zyphur2026responsible} introduces the concept of structured failure-mode reporting as the sixth core competency of AI-literate researchers. When reporting an AI-mediated computational step, researchers should document: (1) the Protocol (tool, version, prompt); (2) the Threat Model (the specific failure modes relevant to the task); (3) the Failure-Discovery Rate (the proportion of outputs that failed verification and how they were resolved); and (4) the Residual Risk (what cannot be fully verified and why).
+
+A methods section that transparently reports a 5\% error rate in AI-assisted data extraction and details the manual correction process is vastly more credible than one that claims flawless AI execution. The structured failure-mode report is not a disclosure of weakness; it is a demonstration of methodological rigor. It signals that the researcher has applied the verification disciplines necessary to ensure the validity of the AI-mediated steps, and it provides the information that independent researchers need to assess the reliability of the findings.
+
+\subsection{Exploratory Analysis, Visualization, and Interpretation}
+
+AI tools are increasingly used for exploratory data analysis and visualization, allowing researchers to generate descriptive statistics, correlation matrices, and preliminary visualizations through natural-language interaction. Tools such as Julius AI, ChatGPT's Advanced Data Analysis, and Claude's data analysis capabilities can produce publication-quality figures from uploaded datasets with minimal technical expertise.
+
+However, the interpretation of these outputs requires the researcher's domain expertise and theoretical judgement. An AI tool can identify that two variables are correlated; it cannot determine whether this correlation is theoretically meaningful, whether it reflects a causal relationship, or whether it is an artifact of the data collection process. The researcher must bring the theoretical framework to the interpretation, using the AI's outputs as inputs to their own analytical process rather than as conclusions in themselves.
+
+%% ============================================================
+\section{Scholarly Communication, Peer Review, and Authorship}
+%% ============================================================
+
+The final stage of the research lifecycle---writing, peer review, and publication---is where the ethical boundaries of AI use are most sharply contested and where the consequences of misuse are most visible to the scholarly community.
+
+\subsection{AI in Scholarly Writing: The Scale of the Change}
+
+The integration of AI into scholarly writing has accelerated dramatically. The Stanford HAI analysis estimated that approximately 17.5\% of computer science papers submitted in 2024 contained AI-assisted content, and a parallel analysis of peer review text found similar proportions \citep{hai2024llmresearch}. A 2025 \textit{Nature} survey of 1,600 academics found that more than half had used AI while peer reviewing manuscripts \citep{nature2025peerreview}. These figures suggest that AI-assisted scholarly writing is not a marginal phenomenon but a mainstream practice that requires clear methodological and ethical frameworks.
+
+\subsection{The Authorship Boundary and the Co-Author Mode}
+
+AI assistance in scholarly writing operates in what \citet{zyphur2026responsible} calls the ``Co-author mode.'' Acceptable uses include language polishing, register conversion (making academic prose more accessible or vice versa), length compression, and structural reorganization. These are labour tasks in the writing domain; they improve the presentation of the researcher's ideas without substituting for the researcher's intellectual contribution.
+
+However, there is a hard boundary: \textit{the researcher must be able to independently produce and defend every claim in the manuscript.} Using AI to generate novel arguments, fabricate evidence, or substitute for the researcher's interpretation crosses the authorship boundary. The researcher who publishes AI-generated claims they cannot independently defend has not merely used a writing tool; they have published invalid research.
+
+Many institutional policies mistakenly frame this solely as a plagiarism issue---presenting AI text as one's own. However, as \citet{zyphur2026responsible} argues, this framing is a category error. The deeper issue is not ownership of text but validity of the research. A researcher who uses AI to generate claims they cannot defend has published invalid research, regardless of who ``owns'' the text. The plagiarism frame misses the more serious problem.
+
+All major publishers universally reject listing AI as an author, as AI cannot take legal or ethical responsibility for the work, cannot be held accountable for errors, and does not meet the ICMJE criteria for authorship (intellectual contribution, approval of the final version, and accountability for the work) \citep{cope2023authorship, habdija2024ai}. Disclosure of AI use that materially shapes the manuscript or analysis is now a mandatory requirement across most top-tier journals, including \textit{Nature}, \textit{Science}, and the journals of the American Psychological Association.
+
+\begin{table}[ht]
+\centering
+\caption{Publisher Policies on AI Use in Scholarly Writing (Selected)}
+\label{tab:publishers}
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Publisher/Journal} & \textbf{AI Authorship} & \textbf{AI Writing Assistance} & \textbf{Disclosure Requirement} \\
+\midrule
+\textit{Nature} & Not permitted & Permitted with disclosure & Mandatory; in Methods section \\
+\textit{Science} & Not permitted & Permitted with disclosure & Mandatory \\
+JAMA / \textit{Lancet} & Not permitted & Restricted; case-by-case & Mandatory \\
+Elsevier & Not permitted & Permitted with disclosure & Mandatory; in cover letter \\
+ACM & Not permitted & Permitted with disclosure & Mandatory \\
+APA Journals & Not permitted & Permitted with disclosure & Mandatory \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Verification as a Non-Delegable Responsibility}
+
+The verification of AI-assisted manuscript content is the researcher's non-delegable responsibility. This includes verifying every citation against the primary source, checking every factual claim against an independent standard, confirming that every inferential claim follows from the cited evidence, and checking the internal consistency of methods, results, and discussion.
+
+The citation hallucination problem is particularly acute in the context of scholarly writing. \citet{walters2023fabrication} found that 55\% of citations generated by GPT-3.5 and 18\% of citations generated by GPT-4 were fabricated. A 2026 \textit{Nature} analysis estimated that tens of thousands of 2025 publications may contain invalid AI-generated references \citep{nature2026hallucination}. These figures underscore the importance of the citation audit as a mandatory step in the preparation of any AI-assisted manuscript.
+
+A five-step verification protocol for AI-assisted manuscripts includes: (1) a citation audit (verifying every citation against the primary source); (2) a factual claim audit (verifying every factual claim against a primary source); (3) an inference audit (confirming every inferential claim follows from the cited evidence); (4) a consistency check (checking that methods, results, and discussion are internally consistent); and (5) a sycophancy check (asking the AI to identify any claims in the manuscript that are overstated or unsupported, then evaluating each identified concern independently).
+
+\subsection{Peer Review: The Validator Mode and Confidentiality}
+
+The use of AI in peer review requires particular care. In the ``Validator mode'' \citep{zyphur2026responsible}, AI can assist a reviewer by identifying methodological gaps, checking internal consistency, and flagging potential concerns. The appropriate role of AI in peer review is as a brainstorm prompt, not as a completed review. The reviewer's own reading, domain expertise, and scholarly judgement are what constitute the review.
+
+A peer review that consists primarily of AI-generated text, without the reviewer's independent assessment, is not a peer review; it is an AI output with a human signature. This is not merely an ethical concern; it is a quality concern. AI systems do not have the domain expertise to evaluate the theoretical contribution of a paper, the methodological appropriateness of a design choice, or the significance of a finding for the field. These are precisely the evaluations that peer review is designed to provide.
+
+Furthermore, uploading a manuscript under review to a commercial, third-party AI system poses a severe breach of confidentiality. The manuscript is shared with the reviewer in trust; exposing it to external servers without explicit journal permission violates the integrity of the peer review process. Many journals now explicitly prohibit this practice, and researchers acting as reviewers should check the journal's policy before using AI assistance in the review process.
+
+%% ============================================================
+\section{Institutional and Publisher Policy Landscape}
+%% ============================================================
+
+\subsection{The Current State of Institutional Policy}
+
+The institutional policy landscape remains significantly underdeveloped relative to the pace of AI adoption in research. While most universities have implemented basic policies addressing plagiarism and disclosure, very few have developed comprehensive frameworks addressing AI literacy, validity, and reproducibility in research training.
+
+\citet{zyphur2026responsible} audited 38 top-tier doctoral universities and found that while all had some form of AI policy document, the vast majority focused primarily on plagiarism and disclosure. Only 6 of 38 policies extended to AI literacy and valid research practices, and only 4 had named individuals responsible for AI literacy in research training. This reflects the speed of the technology's adoption; universities have responded to the most visible and legally tractable aspect of the problem (plagiarism) while the deeper methodological challenges remain largely unaddressed.
+
+\citet{zyphur2026responsible} proposes a four-axis benchmarking grid for assessing institutional AI readiness: (1) the policy document itself; (2) named responsibility (people accountable for enacting the policy); (3) technology systems (tools that support responsible AI use, such as institutional RAG systems and approved tool lists); and (4) process integration (AI use in supervision and examination, including PhD supervision protocols and thesis examination criteria). Most institutions are strong on the first axis and weak on the other three.
+
+\subsection{Funder Policies}
+
+Research funders are beginning to address AI use in funded research, though the landscape is still evolving. The NIH (2024) requires human oversight of AI use and disclosure in grant applications and progress reports. The NSF (2024) similarly requires disclosure of AI use in applications and progress reports. The European Research Council (2024) requires compliance with GDPR and research integrity standards. The Wellcome Trust (2025) prohibits listing AI as an author and requires disclosure in research outputs.
+
+The common thread across funder policies is disclosure and human accountability. The frontier---validity and reproducibility requirements---remains largely unaddressed. This creates a gap between what funders require (disclosure) and what methodological rigor demands (documented verification protocols and structured failure-mode reports).
+
+\subsection{Toward a Minimum Standard for AI Disclosure}
+
+Drawing on the emerging consensus across publisher and funder policies, and on the methodological requirements articulated in \citet{zyphur2026responsible}, we propose the following minimum standard for AI disclosure in academic research:
+
+\begin{tcolorbox}[colback=boxgray, colframe=nupurple, title=Proposed Minimum Standard for AI Disclosure in Academic Research]
+\begin{enumerate}
+    \item \textbf{Tool and version:} Name the specific AI tool and version used (e.g., Claude 3.5 Sonnet, accessed June 2026).
+    \item \textbf{Nature of assistance:} Describe the specific tasks for which AI was used (e.g., literature screening, data annotation, language editing).
+    \item \textbf{Verification:} Confirm that all AI-assisted outputs were verified by the authors and describe the verification method.
+    \item \textbf{Failure-discovery rate:} Report the proportion of AI outputs that required correction and how corrections were made.
+    \item \textbf{Residual risk:} Acknowledge any limitations in the verification process and their potential implications for the findings.
+\end{enumerate}
+\end{tcolorbox}
+
+This standard goes beyond the current requirements of most journals by including the failure-discovery rate and residual risk. These elements are essential for readers to assess the reliability of AI-mediated research steps and for independent researchers to evaluate the reproducibility of the findings.
+
+%% ============================================================
+\section{Future Directions: Human-AI Collaboration in Scientific Discovery}
+%% ============================================================
+
+\subsection{Agentic Research Systems}
+
+Autonomous AI agents capable of executing multi-step research workflows are already in early deployment. Current examples include Elicit's automated systematic review pipeline, OpenAI's Deep Research, Perplexity's research mode, and Google's Co-Scientist system \citep{gottweis2026coscientist}. These systems can autonomously search literature, extract data, synthesize findings, and generate reports, dramatically accelerating the early stages of the research process.
+
+However, agentic systems pose severe challenges for verification and reproducibility. Each autonomous step introduces a potential error that the researcher may not directly observe. The full prompt history of a multi-step interaction may be very long and difficult to document. Agent behavior is particularly sensitive to model updates, making reproducibility especially challenging. And the opacity of multi-step reasoning chains makes it difficult to identify where errors were introduced.
+
+The verification discipline for agentic systems must be more rigorous than for single-step AI interactions. Researchers using agentic systems should: (1) review and document every intermediate output, not just the final result; (2) apply the structured failure-mode report to each step in the pipeline; (3) verify a random sample of the agent's outputs against primary sources; and (4) treat the agent's final output as a starting point for human analysis, not as a conclusion.
+
+\subsection{AI-Generated Hypotheses and the Boundary of Scientific Creativity}
+
+An emerging frontier is AI systems that can propose novel research questions by identifying gaps and contradictions in the existing literature. Systems such as Google's Co-Scientist \citep{gottweis2026coscientist} and the SciSciGPT framework \citep{shao2026sciscigpt} are designed to augment the hypothesis-generation process by systematically mapping the intellectual landscape of a field and identifying underexplored areas.
+
+These systems raise profound questions about the nature of scientific creativity and the boundaries of human intellectual authority. If an AI system identifies a research question that a human researcher then investigates and publishes, who deserves credit for the intellectual contribution? The current consensus---that AI cannot be listed as an author and that the researcher is responsible for the intellectual content of the work---provides a clear answer: the researcher who evaluates, endorses, and investigates the AI-generated hypothesis is the intellectual author of the resulting research.
+
+However, this consensus may need to evolve as AI systems become more sophisticated. The key principle, as \citet{zyphur2026responsible} argues, is that intellectual authority requires the ability to defend the work---to explain why the research question is worth asking, why the chosen method is appropriate, and what the findings mean for the field. As long as this ability remains with the human researcher, the authorship boundary is clear.
+
+\subsection{The Long-Term Trajectory: Complementary Strengths}
+
+The most productive framing of the long-term relationship between AI and human researchers is not ``AI will replace researchers'' or ``AI is just a tool.'' It is that AI and human researchers have complementary strengths that, when properly combined, produce better research than either could produce alone \citep{shi2026survey, roles2025ai}.
+
+AI's strengths include speed and breadth (surveying vast literatures in minutes), pattern recognition across large corpora (identifying connections across disparate fields), tireless consistency (applying annotation schemes without fatigue), and language generation (producing clear, well-structured text). Human researchers' strengths include domain expertise (knowing what matters in a field), theoretical judgement (evaluating the significance of findings), ethical reasoning (navigating the social and political implications of research), interpretive authority (determining what findings mean), and accountability (taking responsibility for the work).
+
+The challenge for research training is to develop researchers who can leverage AI's strengths while maintaining their own. This requires not only technical AI literacy---the ability to use AI tools effectively---but also methodological AI literacy---the ability to reason about validity, detect failure modes, and maintain intellectual authority over the research process. The six competencies articulated by \citet{zyphur2026responsible} provide a framework for this methodological AI literacy: citation verification, model and parameter specification, prompt discipline, model-heterogeneity in adversarial review, sycophancy detection and human-as-verifier discipline, and structured failure-mode reporting.
+
+%% ============================================================
+\section{The Six Core Competencies: A Practical Framework}
+%% ============================================================
+
+The preceding sections have traced the implications of AI across the full research lifecycle. This section synthesizes those implications into a practical competency framework, drawing directly on \citet{zyphur2026responsible}. The six competencies are presented not as a checklist but as an integrated set of disciplines that, taken together, constitute methodological AI literacy for academic researchers.
+
+\subsection{Competency 1: Citation Verification}
+
+The first and most fundamental competency is the ability to verify AI-generated citations against primary sources. As documented in Section~3.2, citation hallucination is a systematic property of LLMs, with rates ranging from 18\% to over 55\% depending on the model and task \citep{walters2023fabrication, nature2026hallucination}. Citation verification requires a three-step protocol: (1) confirming that the cited paper exists (DOI lookup or database search); (2) confirming that the abstract matches the claimed content; and (3) confirming that the specific claim attributed to the paper is actually present in the paper.
+
+This competency applies not only to citations generated by AI but also to citations retrieved through AI-assisted literature search. A RAG system that retrieves a paper from its index may still mischaracterize the paper's findings in its summary. The researcher must verify the summary against the primary source, not merely confirm that the paper exists.
+
+Citation verification is a labour task that can be performed systematically and efficiently with the right tools. DOI lookup, abstract screening, and full-text search can be completed quickly for each citation. The researcher who builds citation verification into their workflow as a routine step will spend less time correcting errors at the manuscript stage than one who defers verification until submission.
+
+\subsection{Competency 2: Model and Parameter Specification}
+
+The second competency is the ability to specify and document the AI model and parameters used in a research step. As discussed in Section~4.3, LLM non-determinism means that the same prompt applied to a different model version or with different parameters may produce substantially different outputs. Model and parameter specification is therefore a reproducibility requirement, not merely a transparency requirement.
+
+The minimum specification includes: the model name and version (e.g., \texttt{claude-3-5-sonnet-20241022}); the provider and access method (API, web interface, or integrated tool); the date of access; the temperature and top-p settings; and the random seed where available. For integrated tools such as Elicit or Consensus, the researcher should document the tool version and the date of access, as these tools update their underlying models and retrieval indices regularly.
+
+Model and parameter specification also enables the researcher to make informed decisions about tool selection. A task that requires high consistency (e.g., applying an annotation scheme to a large dataset) should use a lower temperature setting and a model with a stable version. A task that benefits from diversity (e.g., brainstorming candidate hypotheses) may use a higher temperature setting.
+
+\subsection{Competency 3: Prompt Discipline}
+
+The third competency is prompt discipline: the ability to design, document, and justify prompts as methodological choices. As discussed in Section~3.1, the choice of prompt is a researcher degree of freedom analogous to analytic choices in quantitative research. Different prompts can yield substantively different outputs, and iterating through prompts until a desired output is obtained is a form of confirmation bias.
+
+Prompt discipline involves several practices. First, the researcher should design the prompt before seeing the output, not iteratively refine it until the desired output is obtained. Second, the prompt should be documented verbatim, including any system prompts. Third, the rationale for the prompt design should be explained: why was this framing chosen? What alternatives were considered? Fourth, if multiple prompts were tried, the researcher should report this and explain the basis for selecting the final prompt.
+
+Prompt discipline also involves awareness of the ways in which prompts can inadvertently introduce bias. Leading questions (``Is it true that X causes Y?'') are more likely to produce sycophantic responses than neutral questions (``What does the literature say about the relationship between X and Y?''). Prompts that embed the researcher's preferred conclusion are more likely to produce outputs that confirm that conclusion. Researchers should actively design prompts that challenge their assumptions rather than confirm them.
+
+\subsection{Competency 4: Model Heterogeneity in Adversarial Review}
+
+The fourth competency is the use of model heterogeneity in adversarial review. When using AI to critique an argument, a research design, or a manuscript, the researcher should run the critique through models from at least two different AI families (e.g., OpenAI and Anthropic, or OpenAI and Google). Persistent critique across AI families is stronger evidence of a genuine problem than critique from a single model.
+
+The rationale for this competency is that different AI families are trained on different data, with different architectures and different fine-tuning objectives. A critique that appears in one model but not another may reflect the specific biases or training artifacts of that model rather than a genuine weakness in the argument. A critique that appears consistently across multiple models is more likely to reflect a genuine problem.
+
+Model heterogeneity is particularly important in adversarial review because the researcher is using AI to challenge their own work. The risk of sycophancy is lower in this context (the researcher is explicitly asking for criticism), but the risk of model-specific artifacts is higher. A model that has been fine-tuned to be helpful and agreeable may produce superficial critiques that miss genuine weaknesses. Using multiple models increases the probability of identifying genuine problems.
+
+\subsection{Competency 5: Sycophancy Detection and Human-as-Verifier Discipline}
+
+The fifth competency is the ability to detect and counteract sycophancy. As discussed in Section~2.3, sycophancy is a systematic property of LLMs arising from their optimization for human preference. It is particularly dangerous in research contexts because it can reinforce the researcher's existing beliefs and produce outputs that feel validating but lack objective rigor \citep{sharma2026algorithmic}.
+
+Sycophancy detection involves several strategies. First, the researcher should actively seek disconfirming evidence: instead of asking ``Is my hypothesis supported by the literature?'', ask ``What evidence challenges my hypothesis?'' Second, the researcher should use adversarial prompting: explicitly instruct the AI to disagree, identify weaknesses, or construct the strongest possible counterargument. Third, the researcher should apply model heterogeneity: if multiple models from different families agree with the researcher's position, this is stronger evidence than agreement from a single model. Fourth, the researcher should verify AI agreement against primary sources: if the AI claims that the literature supports a particular position, the researcher should verify this claim by reading the cited papers.
+
+The human-as-verifier discipline is the broader principle underlying this competency: the researcher must always maintain the ability to independently assess the validity of AI outputs. AI agreement is not evidence; it is a prompt for further investigation.
+
+\subsection{Competency 6: Structured Failure-Mode Reporting}
+
+The sixth and final competency is structured failure-mode reporting, discussed in detail in Section~4.4. This competency involves the systematic documentation of AI failure modes, their frequency, and how they were resolved. The structured failure-mode report is the methodological equivalent of a limitations section in a traditional research paper: it acknowledges the constraints of the method and provides the information that readers need to assess the reliability of the findings.
+
+The structured failure-mode report also serves a broader function: it contributes to the collective knowledge base about AI failure modes in research contexts. As researchers document and share their experiences with AI failures, the field can develop more refined understanding of which tools are reliable for which tasks, under which conditions, and with which verification protocols. This collective knowledge is essential for the development of methodological standards that keep pace with the rapid evolution of AI capabilities.
+
+Taken together, these six competencies constitute a framework for methodological AI literacy that is durable across the rapid evolution of specific tools. The competencies address the fundamental challenges of AI-mediated research---hallucination, non-determinism, sycophancy, and opacity---rather than the specific capabilities of current tools. As tools change, the competencies remain relevant.
+
+%% ============================================================
+\section{Implications for Research Training and Doctoral Education}
+%% ============================================================
+
+The framework articulated in this paper has significant implications for research training and doctoral education. If AI literacy is a judgement problem rather than a tooling-skills problem, then the appropriate response is not to add AI tool tutorials to the curriculum but to develop the intellectual dispositions and methodological habits that enable researchers to engage with AI responsibly.
+
+\subsection{Rethinking the Research Methods Curriculum}
+
+Traditional research methods curricula focus on the design, execution, and analysis of research within specific disciplinary traditions. The integration of AI into the research lifecycle does not replace this curriculum; it adds a new layer of methodological considerations that must be integrated throughout.
+
+The most important addition is the explicit treatment of validity reasoning in AI-mediated contexts. Researchers need to understand not only how to use AI tools but how to assess the validity of AI outputs, detect failure modes, and apply appropriate verification protocols. This requires a shift in emphasis from procedural knowledge (how to use the tool) to evaluative knowledge (how to assess the tool's outputs).
+
+The labour-versus-judgement demarcation should be taught explicitly, with worked examples from the students' own disciplines. Students should practice identifying which tasks in their research workflow are labour tasks that can be safely delegated to AI, and which are judgement tasks that require human intellectual authority. This exercise is valuable not only for AI literacy but for developing a more explicit understanding of what scholarly expertise consists of.
+
+The discovery-versus-verification distinction should similarly be taught explicitly, with practice in applying verification protocols to AI-generated outputs. Students should practice citation verification, prompt documentation, and structured failure-mode reporting as routine methodological skills, not as exceptional responses to AI failures.
+
+\subsection{Supervision and the Transmission of AI Literacy}
+
+Doctoral supervision is the primary mechanism through which methodological norms are transmitted in academic research. The integration of AI into the research lifecycle requires supervisors to develop their own AI literacy and to model responsible AI use in their supervision practice.
+
+This is a significant challenge, because many supervisors are themselves navigating the AI landscape without established norms or institutional guidance. The competency framework articulated by \citet{zyphur2026responsible} provides a starting point: supervisors can use the six competencies as a framework for discussing AI use with their students, evaluating AI-assisted work, and setting expectations for documentation and verification.
+
+Supervisors should also be aware of the risk that AI use by doctoral students may be invisible. A student who uses AI to generate a literature review, a research design, or a draft chapter may produce work that appears competent but lacks the intellectual engagement that is the purpose of doctoral training. Supervisors need to develop practices for assessing not only the quality of the work but the student's ability to explain, defend, and extend it---the hallmarks of genuine intellectual authority.
+
+\subsection{Assessment and Examination in an AI-Augmented Environment}
+
+The integration of AI into research practice raises fundamental questions about assessment and examination in doctoral education. If AI can assist with many of the tasks that doctoral examinations are designed to assess, what do those examinations actually measure?
+
+The answer, from the perspective of this framework, is that examinations should assess the competencies that AI cannot replicate: the ability to explain and defend methodological choices, to interpret findings in the context of the theoretical literature, to identify the limitations of the research and their implications, and to articulate the contribution of the work to the field. These are judgement tasks that require the researcher's intellectual authority, and they are precisely the competencies that doctoral training is designed to develop.
+
+Examination formats should be designed to assess these competencies directly. Oral examinations (viva voce) are particularly well-suited to this purpose, because they require the candidate to respond to unpredictable questions in real time, demonstrating the depth of their understanding rather than the quality of their preparation. Written examinations that require candidates to analyze novel cases or evaluate unfamiliar arguments similarly assess genuine intellectual competence rather than the ability to produce polished text.
+
+%% ============================================================
+\section{Conclusion}
+%% ============================================================
+
+The integration of AI into academic research represents a profound shift in the practice of science. The tools are powerful, their adoption is rapid, and their implications for research validity, reproducibility, and integrity are significant. This paper has argued that navigating this shift requires a framework centered on scholarly judgement rather than tooling skills.
+
+The two foundational distinctions---between labour tasks and judgement tasks, and between discovery activities and verification activities---provide a principled basis for deciding where AI can be safely deployed and where human intellectual authority must remain absolute. The verification disciplines articulated throughout this paper---citation auditing, prompt documentation, re-run stability testing, inter-rater reliability reporting, and structured failure-mode reporting---provide the methodological tools for maintaining research validity in an AI-augmented environment.
+
+The institutional and publisher policy landscape is evolving, but it remains significantly underdeveloped relative to the pace of AI adoption. The minimum disclosure standard proposed in Section~6.3 represents a step toward the comprehensive framework that the field needs. However, disclosure alone is insufficient; the deeper challenge is to develop a culture of methodological rigor in AI-augmented research, in which researchers treat AI outputs as inputs to their own analytical process rather than as conclusions in themselves.
+
+The future of scientific discovery lies in human-AI collaboration, where AI provides speed, breadth, and pattern recognition, while humans provide domain expertise, theoretical judgement, and ethical accountability. This collaboration will produce better research than either could produce alone---but only if the human researcher maintains the intellectual authority that makes the research valid. AI is a powerful instrument; research judgement is what makes it a scholarly one.
+
+\newpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
