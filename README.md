@@ -70,7 +70,7 @@ streamlit run app.py
 
 A manuscript describing the workshope is available here:
 
-[AI-Augmented Research: A Framework for Scholarly Judgement and Responsible Practice](./paper/ai_augmented_research.pdf)
+[AI-Augmented Research](./paper/ai_augmented_research.pdf)
 ---
 
 ## License
