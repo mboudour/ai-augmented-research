@@ -68,9 +68,19 @@ streamlit run app.py
 
 ## Position Paper
 
-A manuscript describing the workshope is available here:
+A manuscript describing the workshope is available here: [AI-Augmented Research](./paper/ai_augmented_research.pdf)
 
-[AI-Augmented Research](./paper/ai_augmented_research.pdf)
+---
+
+## Workshop Slides
+
+- [Day 1: Research Judgement in an AI Environment](./slides/session1_1.pdf)
+- [Day 1: Literature Discovery, Synthesis, and Research Design](./slides/session1_2.pdf)
+- [Day 2: Validity Reasoning in AI-Mediated Data Work](./slides/session2_1)
+- [Day 2: From Research Question to Verified Finding (Case Study)](./slides/session2_2.pdf)
+- [Day 3: Authorship, Integrity, and the Limits of AI Assistance](./slides/session3_1.pdf)
+- [Day 3: Research Judgement in an Institutional Context](./slides/session3_2.pdf)
+
 ---
 
 ## License
