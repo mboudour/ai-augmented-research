@@ -25,7 +25,7 @@ st.markdown("""
 School of Professional Studies, Northwestern University
 
 > **📋 Registration**
-> **[Register now at instats.org](https://instats.org)**
+> **[Register now at instats.org](https://instats.org/seminar/ai-assisted-systematic-reviews-and-meta)**
 """)
 
 st.markdown("---")
@@ -162,7 +162,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
 **📋 InStats Seminar Page**
-[Register and view full details](https://instats.org)
+[Register and view full details](https://instats.org/seminar/ai-assisted-systematic-reviews-and-meta)
     """)
 with col2:
     st.markdown("""

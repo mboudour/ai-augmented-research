@@ -5,6 +5,11 @@ title: AI-Augmented Research
 
 # AI-Augmented Research: A Framework for Scholarly Judgement and Responsible Practice
 
+**instats Seminar — August 10, 11, and 12, 2026 &nbsp;|&nbsp; Instructor:** Moses Boudourides, Data Science Graduate Program, School of Professional Studies, Northwestern University
+
+> ### 📋 Registration
+> **[Register now at instats.org](https://instats.org/seminar/ai-assisted-systematic-reviews-and-meta)**
+
 Welcome to the project site for the **AI-Augmented Research** seminar. This three-day intensive seminar explores how artificial intelligence is reshaping the academic research lifecycle, from question formation and literature synthesis to computational workflows and scholarly communication.
 
 The seminar is grounded in the premise that AI literacy for academic researchers is fundamentally a **judgement problem**, not a tooling-skills problem. The barrier to sophisticated computational research has shifted from programming expertise to validity reasoning.
@@ -38,7 +43,6 @@ The app features two modes for each session:
 ## Resources
 
 * **Position Paper:** [AI-Augmented Research: A Framework for Scholarly Judgement and Responsible Practice](../paper/ai_augmented_research.pdf) (PDF, 30 pages)
-* **Bibliography:** [references.bib](../paper/references.bib)
 
 ## The Six Core Competencies
 

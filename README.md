@@ -3,7 +3,7 @@
 **Instructor:** Moses Boudourides, Data Science Graduate Program, School of Professional Studies, Northwestern University
 
 > ### 📋 Registration
-> **[Register now at instats.org](https://instats.org)**
+> **[Register now at instats.org](https://instats.org/seminar/ai-assisted-systematic-reviews-and-meta)**
 
 [![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)](https://ai-augmented-research.streamlit.app) [Streamlit App](https://ai-augmented-research.streamlit.app)
 
@@ -33,7 +33,8 @@ A Competency Framework for Research Training*.
   requirements.txt
 /docs         — GitHub Pages project site
 /slides       — Session slide decks (PDF)
-/paper        — Position paper (PDF + LaTeX source + BibTeX)
+/paper        — Position paper (PDF)
+/scripts      — Standalone Python scripts and prompt library
 README.md
 ```
 
@@ -66,9 +67,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-**API key:** BYOD features require an OpenAI API key. Upload a plain-text `.txt` file
-containing your key via the sidebar. Keys are held in session memory only and are never
-stored or logged.
+**API key:** BYOD features support four providers: Gemini (free), Groq (free), OpenAI, and Claude. Upload a plain-text `.txt` file containing your key via the sidebar. Keys are held in session memory only and are never stored or logged.
 
 ---
 
