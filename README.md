@@ -24,22 +24,6 @@ A Competency Framework for Research Training*.
 
 ---
 
-## Repository Structure
-
-```
-/app          — Streamlit companion app (multi-page)
-  app.py      — Landing page
-  pages/      — One page per session (6 sessions)
-  requirements.txt
-/docs         — GitHub Pages project site
-/slides       — Session slide decks (PDF)
-/paper        — Position paper (PDF)
-/scripts      — Standalone Python scripts and prompt library
-README.md
-```
-
----
-
 ## Seminar Schedule
 
 | Day | Date | Session | Title | Time |
@@ -84,9 +68,9 @@ streamlit run app.py
 
 ## Position Paper
 
-*AI-Augmented Research: A Framework for Scholarly Judgement and Responsible Practice*
-(30 pages, ~9,000 words) — available in `/paper/`.
+A manuscript describing the workshope is available here:
 
+[AI-Augmented Research: A Framework for Scholarly Judgement and Responsible Practice](./paper/ai_augmented_research.pdf)
 ---
 
 ## License
