@@ -4,6 +4,7 @@ Landing page: seminar overview, 6-session architecture, BYOD description, resour
 """
 
 import streamlit as st
+from llm_helper import render_sidebar_llm_config, PROVIDERS
 
 st.set_page_config(
     page_title="AI-Augmented Research",
@@ -12,6 +13,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ── Sidebar: LLM provider + API key ───────────────────────────────────────────
+render_sidebar_llm_config()
+
+# ── Page header ────────────────────────────────────────────────────────────────
 st.title("🧠 AI-Augmented Research")
 st.subheader("A Three-Day Academic Seminar — August 10, 11 & 12, 2026")
 
@@ -24,26 +29,6 @@ School of Professional Studies, Northwestern University
 """)
 
 st.markdown("---")
-
-# ── Sidebar: API key upload ────────────────────────────────────────────────────
-with st.sidebar:
-    st.header("🔑 API Key")
-    st.markdown("""
-Upload a plain-text file (`.txt`) containing your **OpenAI** or **Anthropic** API key.
-The key is held in session memory only and is never stored or logged.
-    """)
-    key_file = st.file_uploader("Upload API key file", type=["txt"], label_visibility="collapsed")
-    if key_file is not None:
-        api_key = key_file.read().decode("utf-8").strip()
-        st.session_state["api_key"] = api_key
-        st.success("API key loaded (not displayed).")
-    if st.button("Clear API key"):
-        st.session_state.pop("api_key", None)
-        st.info("API key cleared.")
-    if "api_key" in st.session_state:
-        st.caption("✅ API key is active for this session.")
-    else:
-        st.caption("⚠️ No API key loaded. BYOD features require a key.")
 
 # ── Core Identity ──────────────────────────────────────────────────────────────
 st.markdown("""
@@ -64,6 +49,33 @@ BYOD (Bring Your Own Data/Document) interfaces for each of the six sessions. The
 verification disciplines discussed in the seminar: citation auditing, prompt documentation, sycophancy
 detection, and structured failure-mode reporting.
 """)
+
+st.markdown("---")
+
+# ── AI Provider Info ───────────────────────────────────────────────────────────
+st.markdown("### Supported AI Providers")
+st.markdown("""
+The app supports four AI providers. Select your provider in the sidebar and upload your API key
+as a plain-text `.txt` file. Keys are held in session memory only and are never stored or logged.
+""")
+
+provider_data = {
+    "Provider": ["Google Gemini (Free)", "Groq (Free)", "OpenAI", "Anthropic Claude"],
+    "Default model": ["Gemini 1.5 Flash", "Llama 3.1 70B", "GPT-4o", "Claude 3.5 Sonnet"],
+    "Cost": ["Free tier (1,500 req/day)", "Free tier (14,400 req/day)", "Paid (per token)", "Paid (per token)"],
+    "Get key": [
+        "aistudio.google.com",
+        "console.groq.com",
+        "platform.openai.com",
+        "console.anthropic.com",
+    ],
+}
+import pandas as pd
+st.dataframe(pd.DataFrame(provider_data), use_container_width=True)
+st.caption(
+    "For seminar participants with no existing API account, **Gemini 1.5 Flash** (free, "
+    "no credit card required) is the recommended starting point."
+)
 
 st.markdown("---")
 
@@ -111,12 +123,8 @@ AI-generated outputs from the discovery phase as verified findings without apply
 st.markdown("---")
 
 # ── The Six Core Competencies ──────────────────────────────────────────────────
-st.markdown("### The Six Core Competencies")
+st.markdown("### The Six Core Competencies (Zyphur 2026)")
 st.markdown("""
-This seminar is aligned with Michael Zyphur's (2026) *Responsible AI in Academic Research: A
-Competency Framework for Research Training*. The six competencies run as a continuous thread
-across all six sessions:
-
 | # | Competency | What it addresses |
 |---|-----------|-------------------|
 | 1 | **Citation Verification** | Detecting and eliminating citation hallucination |
@@ -132,20 +140,17 @@ st.markdown("---")
 # ── BYOD ───────────────────────────────────────────────────────────────────────
 st.markdown("### Bring Your Own Data/Document (BYOD)")
 st.markdown("""
-Each session includes a BYOD extension so participants can apply the verification workflows to their
-own research in real time.
-
 | Session | BYOD Input | What the app does |
 |---------|-----------|-------------------|
 | **1.1** | Research question or hypothesis (text) | Runs sycophancy check + adversarial critique |
 | **1.2** | Research question (text) | Scopes literature via Semantic Scholar API + citation verification |
 | **2.1** | Dataset (CSV/Excel) | Performs cleaning audit and flags methodological assumptions |
 | **2.2** | Dataset (CSV/Excel) | Full pipeline: summary stats → cleaning → visualization → AI interpretation → verification |
-| **3.1** | Abstract or manuscript passage (text/PDF) | Citation audit + sycophancy check + adversarial critique |
-| **3.2** | Draft methods section describing AI use (text) | Evaluates against the minimum AI disclosure standard |
+| **3.1** | Abstract or manuscript passage (text) | Citation audit + sycophancy check + adversarial critique |
+| **3.2** | Draft AI disclosure statement (text) | Evaluates against the minimum AI disclosure standard |
 
 > **Privacy notice:** All user-uploaded files and text are processed in session memory only.
-> No data is written to disk, stored, or transmitted to any service other than the AI API you specify.
+> No data is written to disk, stored, or transmitted to any service other than the AI provider you select.
 > Your API key is never displayed, stored, or logged.
 """)
 

@@ -8,6 +8,9 @@ BYOD: user uploads CSV/Excel; app runs the full pipeline with verification at ea
 """
 
 import streamlit as st
+import sys, pathlib as _pathlib
+sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parent.parent))
+from llm_helper import render_sidebar_llm_config, call_llm, get_provider_info
 import pandas as pd
 import numpy as np
 import matplotlib
@@ -20,29 +23,8 @@ st.set_page_config(
     page_icon="🔬",
     layout="wide",
 )
+render_sidebar_llm_config()
 
-def get_api_key():
-    return st.session_state.get("api_key", None)
-
-def call_llm(system_prompt: str, user_prompt: str, model: str = "gpt-4o") -> str:
-    api_key = get_api_key()
-    if not api_key:
-        return "⚠️ No API key found. Please upload your API key file on the home page."
-    try:
-        import openai
-        client = openai.OpenAI(api_key=api_key)
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            temperature=0.2,
-            max_tokens=1500,
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        return f"❌ API error: {e}"
 
 # ── Synthetic worked example dataset ──────────────────────────────────────────
 @st.cache_data

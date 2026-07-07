@@ -1,46 +1,16 @@
 """
 Session 1.1 — Research Judgement in an AI Environment
 Day 1 · August 10, 2026 · 6:00–7:30 pm
-
-Worked examples: sycophancy check, adversarial critique, labour-vs-judgement classification.
-BYOD: user submits a research question or hypothesis; app runs sycophancy check + adversarial critique.
 """
 
 import streamlit as st
-import os
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+from llm_helper import render_sidebar_llm_config, call_llm, get_provider_info
 
-st.set_page_config(
-    page_title="Session 1.1 — Research Judgement",
-    page_icon="🧠",
-    layout="wide",
-)
+st.set_page_config(page_title="Session 1.1 — Research Judgement", page_icon="🧠", layout="wide")
+render_sidebar_llm_config()
 
-# ── Shared API key helper ──────────────────────────────────────────────────────
-def get_api_key():
-    return st.session_state.get("api_key", None)
-
-def call_llm(system_prompt: str, user_prompt: str, model: str = "gpt-4o") -> str:
-    """Call OpenAI-compatible API and return the response text."""
-    api_key = get_api_key()
-    if not api_key:
-        return "⚠️ No API key found. Please upload your API key file on the home page."
-    try:
-        import openai
-        client = openai.OpenAI(api_key=api_key)
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            temperature=0.3,
-            max_tokens=1200,
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        return f"❌ API error: {e}"
-
-# ── Page header ────────────────────────────────────────────────────────────────
 st.title("🧠 Session 1.1 — Research Judgement in an AI Environment")
 st.caption("Day 1 · August 10, 2026 · 6:00–7:30 pm")
 
@@ -53,11 +23,8 @@ algorithmic sycophancy. The worked examples below demonstrate each concept with 
 st.markdown("---")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# WORKED EXAMPLES
-# ══════════════════════════════════════════════════════════════════════════════
 st.header("📋 Worked Examples")
 
-# ── Example 1: Sycophancy check ───────────────────────────────────────────────
 with st.expander("**Example 1 — Detecting Sycophancy: The Leading-Question Trap**", expanded=True):
     st.markdown("""
 **Research context:** A doctoral student in education policy believes that charter schools improve
@@ -112,13 +79,7 @@ reflects the contested nature of the evidence.
 design prompts that challenge their assumptions rather than confirm them.
 """)
 
-# ── Example 2: Labour vs. Judgement classification ────────────────────────────
 with st.expander("**Example 2 — The Labour-versus-Judgement Demarcation**"):
-    st.markdown("""
-**Research context:** A sociologist is beginning a mixed-methods study of organizational resilience.
-They ask an AI to help plan the research. The example below shows the same request framed two ways —
-one that correctly uses AI for a labour task, and one that incorrectly delegates a judgement task.
-""")
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("##### ✅ Appropriate delegation (labour task)")
@@ -152,8 +113,7 @@ context, and scholarly accountability. The AI can surface options, but the resea
 independently evaluate and defend every choice.
 
 **The substitution error (Zyphur 2026):** Using AI to substitute for the researcher's
-intellectual authority rather than to augment it. A researcher who publishes an AI-selected
-theoretical framework they cannot independently defend has published invalid research.
+intellectual authority rather than to augment it.
 
 **Correct use:** Ask the AI to *list and describe* candidate frameworks, then make the
 selection yourself based on your own theoretical judgement.
@@ -162,17 +122,13 @@ selection yourself based on your own theoretical judgement.
 st.markdown("---")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# BYOD
-# ══════════════════════════════════════════════════════════════════════════════
 st.header("🔬 Bring Your Own Research Question (BYOD)")
 
 st.markdown("""
-Enter a research question or hypothesis below. The app will:
-1. Run a **sycophancy check** — asking the AI to identify any assumptions embedded in your framing.
-2. Run an **adversarial critique** — asking the AI to construct the strongest possible counterargument.
-3. Show you both outputs side by side so you can evaluate them independently.
+Enter a research question or hypothesis below. The app will run a **sycophancy check** and an
+**adversarial critique** using your selected AI provider.
 
-> **Note:** This requires an API key. Upload your key on the home page before proceeding.
+> **Note:** Select your provider and upload your API key in the sidebar before proceeding.
 """)
 
 user_question = st.text_area(
@@ -182,65 +138,40 @@ user_question = st.text_area(
 )
 
 col_run1, col_run2 = st.columns(2)
-
 with col_run1:
     run_syco = st.button("▶ Run Sycophancy Check", use_container_width=True)
 with col_run2:
     run_adv = st.button("▶ Run Adversarial Critique", use_container_width=True)
 
 if run_syco and user_question.strip():
+    system = (
+        "You are a critical research methods advisor. Your task is to identify any "
+        "assumptions, biases, or leading framings embedded in the research question or "
+        "hypothesis provided. Do not answer the question itself. Instead, list the "
+        "assumptions the question takes for granted, explain how each assumption could "
+        "bias the research, and suggest a more neutral reformulation."
+    )
     with st.spinner("Running sycophancy check..."):
-        system = (
-            "You are a critical research methods advisor. Your task is to identify any "
-            "assumptions, biases, or leading framings embedded in the research question or "
-            "hypothesis provided. Do not answer the question itself. Instead, list the "
-            "assumptions the question takes for granted, explain how each assumption could "
-            "bias the research, and suggest a more neutral reformulation."
-        )
         result = call_llm(system, f"Research question: {user_question}")
     st.subheader("Sycophancy Check Result")
-    st.markdown(f"""
-**Prompt used (verbatim):**
-```
-System: {system[:200]}...
-User: Research question: {user_question}
-Model: gpt-4o | Temperature: 0.3
-```
-**AI output:**
-""")
+    st.code(f"Provider: {get_provider_info()}\nSystem: {system[:120]}...\nUser: Research question: {user_question}", language="text")
     st.info(result)
-    st.caption(
-        "⚠️ Verification reminder: Review each identified assumption independently. "
-        "AI identification of assumptions is itself subject to model bias — use this output "
-        "as a starting point for your own critical reflection, not as a definitive audit."
-    )
+    st.caption("⚠️ Verification reminder: Review each identified assumption independently. Use this as a starting point for your own critical reflection, not as a definitive audit.")
 
 if run_adv and user_question.strip():
+    system = (
+        "You are a rigorous academic peer reviewer. Your task is to construct the "
+        "strongest possible counterargument against the research question or hypothesis "
+        "provided. Draw on methodological, theoretical, and empirical objections. "
+        "Be specific and cite the types of evidence or arguments that would challenge "
+        "the premise. Do not be diplomatic — your goal is to stress-test the research."
+    )
     with st.spinner("Running adversarial critique..."):
-        system = (
-            "You are a rigorous academic peer reviewer. Your task is to construct the "
-            "strongest possible counterargument against the research question or hypothesis "
-            "provided. Draw on methodological, theoretical, and empirical objections. "
-            "Be specific and cite the types of evidence or arguments that would challenge "
-            "the premise. Do not be diplomatic — your goal is to stress-test the research."
-        )
         result = call_llm(system, f"Research question or hypothesis: {user_question}")
     st.subheader("Adversarial Critique Result")
-    st.markdown(f"""
-**Prompt used (verbatim):**
-```
-System: {system[:200]}...
-User: Research question or hypothesis: {user_question}
-Model: gpt-4o | Temperature: 0.3
-```
-**AI output:**
-""")
+    st.code(f"Provider: {get_provider_info()}\nSystem: {system[:120]}...\nUser: {user_question}", language="text")
     st.warning(result)
-    st.caption(
-        "⚠️ Verification reminder: Evaluate each objection independently against the literature. "
-        "An AI critique is a brainstorm prompt, not a peer review. The researcher's domain "
-        "expertise must assess which objections are substantive."
-    )
+    st.caption("⚠️ Verification reminder: Evaluate each objection independently against the literature. An AI critique is a brainstorm prompt, not a peer review.")
 
 if (run_syco or run_adv) and not user_question.strip():
     st.error("Please enter a research question before running the analysis.")
