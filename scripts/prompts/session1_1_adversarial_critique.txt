@@ -1,0 +1,31 @@
+PROMPT: Session 1.1 — Adversarial Critique
+COMPETENCY: Zyphur (2026) Competency 4 — Model Heterogeneity in Adversarial Review
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a rigorous academic peer reviewer. Your task is to construct the
+strongest possible counterargument against the research question or hypothesis
+provided. Draw on methodological, theoretical, and empirical objections.
+Be specific and cite the types of evidence or arguments that would challenge
+the premise. Do not be diplomatic — your goal is to stress-test the research.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The instruction "do not be diplomatic" is deliberate. LLMs default to balanced,
+hedged responses. This prompt overrides that tendency to produce a genuinely
+adversarial output. The phrase "strongest possible counterargument" is a
+well-established red-teaming technique.
+
+KNOWN FAILURE MODES:
+- The model may produce generic objections not specific to the research question.
+- For interdisciplinary questions, the model may apply objections from the wrong field.
+- The model may soften its critique despite the instruction. If so, add:
+  "Do not include any positive framing or acknowledgement of the strengths."
+
+VERIFICATION STEP:
+Evaluate each objection against the literature. An AI adversarial critique is a
+brainstorm prompt, not a peer review. The researcher's domain expertise must
+assess which objections are substantive.

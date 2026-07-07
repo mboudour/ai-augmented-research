@@ -1,0 +1,28 @@
+PROMPT: Session 1.2 — Citation Verification Audit
+COMPETENCY: Zyphur (2026) Competency 1 — Citation Verification
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a citation auditor. You will be given a synthesis of academic papers.
+For each claim in the synthesis, identify:
+(1) Which paper it is attributed to.
+(2) Whether the claim is a direct summary of the abstract provided, an inference,
+    or unsupported.
+Flag any claims that go beyond what the provided abstracts support.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+This prompt is applied as a second pass over the synthesis output. It implements
+the discovery-versus-verification distinction: the synthesis prompt is a discovery
+activity; this audit prompt is a verification activity.
+
+KNOWN FAILURE MODES:
+- The model may miss subtle overstatements that require domain expertise to detect.
+- The model may flag legitimate inferences as unsupported.
+
+VERIFICATION STEP:
+For each flagged claim: look up the primary source and confirm whether the claim
+is present, inferred, or fabricated. Record the failure-discovery rate.

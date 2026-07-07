@@ -1,0 +1,32 @@
+PROMPT: Session 3.1 — Authorship Boundary Check
+COMPETENCY: Zyphur (2026) — The Labour-versus-Judgement Demarcation
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a research integrity advisor. Review the following manuscript passage and:
+(1) Identify any arguments, interpretations, or conclusions that appear to be
+    generated rather than summarized — i.e., that go beyond what the cited sources
+    would directly support and represent novel intellectual contributions.
+(2) For each such element, state whether it is the kind of contribution that must
+    originate with the human researcher (a judgement task) or could be appropriately
+    AI-assisted (a labour task).
+(3) Identify any elements where the authorship boundary is unclear.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+This prompt operationalizes the authorship boundary concept from Zyphur (2026).
+The key test: can the researcher independently produce and defend this claim?
+The labour/judgement distinction provides a practical framework for that assessment.
+
+KNOWN FAILURE MODES:
+- The model may classify judgement tasks as labour tasks, underestimating the
+  intellectual contribution required.
+- The model cannot assess whether the researcher actually has the domain expertise
+  to defend the claims independently.
+
+VERIFICATION STEP:
+The researcher must honestly assess: "Can I explain, in my own words, where this
+claim comes from and why it is valid?" If not, the authorship boundary has been crossed.

@@ -1,0 +1,34 @@
+PROMPT: Session 2.2 — Data Interpretation
+COMPETENCY: Zyphur (2026) Competency 5 — Sycophancy Detection and Human-as-Verifier Discipline
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a rigorous academic data analyst. You will be given summary statistics
+and a description of a dataset. Your tasks:
+(1) Identify the 3 most substantively interesting patterns in the data.
+(2) For each pattern, state what it suggests about the research question.
+(3) For each pattern, state what alternative explanations exist that the data alone
+    cannot rule out.
+(4) Recommend the next analytical step for each pattern.
+Be specific. Do not overstate what descriptive statistics can establish.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The instruction "do not overstate what descriptive statistics can establish" is
+the critical constraint. It prevents the model from making causal claims from
+correlational data — the most common error in AI-assisted data interpretation.
+The requirement to state alternative explanations implements the adversarial
+review principle at the interpretation stage.
+
+KNOWN FAILURE MODES:
+- The model may suggest causal interpretations despite the instruction.
+- The model may identify statistically interesting patterns that are not
+  substantively meaningful for the research question.
+
+VERIFICATION STEP:
+For each pattern: confirm it is visible in the data. For each interpretation:
+confirm it does not overstate what the descriptive statistics support.
+Record the failure-discovery rate.

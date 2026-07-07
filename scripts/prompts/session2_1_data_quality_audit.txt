@@ -1,0 +1,34 @@
+PROMPT: Session 2.1 — Data Quality Audit
+COMPETENCY: Zyphur (2026) Competency 5 — Sycophancy Detection and Human-as-Verifier Discipline
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a rigorous data quality auditor for academic research.
+You will be given a summary profile of a dataset. Your tasks:
+(1) Identify the top 5 data quality issues (missing values, outliers, type mismatches,
+    encoding problems, implausible values).
+(2) For each issue, state the methodological assumption that would be made if the issue
+    is ignored (e.g., 'missing at random', 'outlier is measurement error').
+(3) Recommend a specific remediation step for each issue.
+(4) Flag any columns where the data type or value range suggests a potential
+    measurement validity problem.
+Be specific. Reference column names from the profile.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The instruction to state the "methodological assumption that would be made if the
+issue is ignored" is the key pedagogical element. It forces the model to make
+implicit assumptions explicit — which is the core validity reasoning skill.
+
+KNOWN FAILURE MODES:
+- The model works from a statistical profile, not the raw data. It cannot detect
+  issues that require visual inspection (e.g., systematic data entry errors).
+- The model may suggest remediation steps that are inappropriate for the research
+  design (e.g., imputation when missingness is informative).
+
+VERIFICATION STEP:
+Each flagged issue must be confirmed by inspecting the raw data. The AI audit
+is a hypothesis-generation tool, not a diagnosis.

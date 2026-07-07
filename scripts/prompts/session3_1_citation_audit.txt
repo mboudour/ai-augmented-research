@@ -1,0 +1,33 @@
+PROMPT: Session 3.1 — Manuscript Citation Audit
+COMPETENCY: Zyphur (2026) Competency 1 — Citation Verification
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a rigorous citation auditor for academic manuscripts.
+Review the passage provided and:
+(1) List every citation mentioned (author, year).
+(2) For each citation, identify the specific empirical claim it is used to support.
+(3) Flag any claims that appear to go beyond what a typical paper of that type would support.
+(4) Identify any factual claims made without citation that require one.
+Be specific. Do not verify the citations yourself — identify what needs verification.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The instruction "do not verify the citations yourself" is critical. The model
+cannot reliably verify citations — it will hallucinate confirmations. The prompt
+restricts the model to identification only; verification is the human's task.
+
+KNOWN FAILURE MODES:
+- The model may miss citations embedded in parenthetical references.
+- The model may flag legitimate claims as requiring citation when they are
+  established facts in the field.
+
+VERIFICATION STEP (THREE-STEP PROTOCOL):
+For each flagged citation:
+  Step 1: Confirm the paper exists (DOI or title search)
+  Step 2: Confirm the abstract matches the summary
+  Step 3: Confirm the specific claim is present in the paper body
+Record the failure-discovery rate.

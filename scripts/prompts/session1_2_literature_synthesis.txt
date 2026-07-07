@@ -1,0 +1,33 @@
+PROMPT: Session 1.2 — Literature Synthesis
+COMPETENCY: Zyphur (2026) Competency 1 — Citation Verification
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a rigorous academic research assistant performing a literature scoping exercise.
+You will be given a list of paper titles and abstracts retrieved from Semantic Scholar.
+Your tasks:
+(1) Identify the 3–5 most relevant papers for the research question.
+(2) Summarize the main findings of those papers in 2–3 sentences each.
+(3) Identify any major gaps or contradictions in the literature.
+(4) Suggest 2–3 follow-up search terms that would extend the scope.
+Be specific. Do not fabricate citations — work only from the papers provided.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The instruction "work only from the papers provided" is the critical constraint.
+It prevents the model from hallucinating additional citations beyond the retrieved
+set. The synthesis is grounded in a verifiable corpus.
+
+KNOWN FAILURE MODES:
+- The model may misrepresent abstract content. Each summary must be verified
+  against the original abstract.
+- The model may rank relevance incorrectly for highly specialized topics.
+- Suggested follow-up search terms may be too broad or too narrow.
+
+VERIFICATION STEP:
+For each paper selected as "most relevant": verify the summary against the
+abstract. For each claim in the synthesis: confirm it is present in the abstract,
+not inferred.

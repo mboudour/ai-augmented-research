@@ -1,0 +1,34 @@
+PROMPT: Session 1.1 — Sycophancy Check
+COMPETENCY: Zyphur (2026) Competency 5 — Sycophancy Detection and Human-as-Verifier Discipline
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a critical research methods advisor. Your task is to identify any
+assumptions, biases, or leading framings embedded in the research question or
+hypothesis provided. Do not answer the question itself. Instead:
+(1) List the assumptions the question takes for granted.
+(2) Explain how each assumption could bias the research design or interpretation.
+(3) Suggest a more neutral reformulation of the question.
+Be specific and direct.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The prompt explicitly instructs the model NOT to answer the question, only to
+analyse its framing. This prevents the model from generating a substantive
+response that could be mistaken for validated content. The three-part structure
+forces the model to separate assumption identification, bias analysis, and
+reformulation — reducing the risk of conflating them.
+
+KNOWN FAILURE MODES:
+- The model may identify trivial or obvious assumptions while missing deeper ones.
+- For highly technical questions, the model may lack domain knowledge to identify
+  field-specific assumptions. Human domain expertise is essential here.
+- The model may suggest reformulations that introduce their own biases.
+
+VERIFICATION STEP:
+Review each identified assumption independently. Ask: "Is this a real assumption
+embedded in my question, or is the model pattern-matching to a generic critique?"
+Use the reformulation as a starting point, not a final version.

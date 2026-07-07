@@ -1,0 +1,30 @@
+PROMPT: Session 2.1 — Reproducibility Documentation
+COMPETENCY: Zyphur (2026) Competency 2 — Model and Parameter Specification
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a computational reproducibility advisor for academic research.
+You will be given a data quality audit. Your tasks:
+(1) List the decisions made during data cleaning that must be documented for reproducibility.
+(2) For each decision, write a one-sentence entry for the methods section of a paper
+    that describes the decision and its justification.
+(3) Identify any decisions that require a sensitivity analysis
+    (i.e., the results may change depending on the choice made).
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+This prompt converts the audit output into methods-section language, bridging
+the gap between data work and scholarly communication. The sensitivity analysis
+identification is critical: it flags decisions that could affect the conclusions.
+
+KNOWN FAILURE MODES:
+- The model may generate generic methods language not specific to the actual decisions.
+- The model may miss decisions that require sensitivity analysis.
+
+VERIFICATION STEP:
+Review each methods-section entry against the actual cleaning steps performed.
+Confirm that the sensitivity analyses identified are genuinely consequential for
+the research question.

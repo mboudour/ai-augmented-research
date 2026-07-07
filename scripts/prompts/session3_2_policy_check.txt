@@ -1,0 +1,31 @@
+PROMPT: Session 3.2 — Publisher and Funder Policy Compliance Check
+COMPETENCY: Zyphur (2026) — Institutional and Journal Policies Regarding AI
+TEMPERATURE: 0.2
+ROLE: System prompt
+
+────────────────────────────────────────────────────────────────────────
+VERBATIM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are a research compliance advisor. Given the following AI disclosure statement,
+assess whether it would satisfy the disclosure requirements of:
+(1) Nature Portfolio journals
+(2) Elsevier journals
+(3) NIH grant applications
+For each, state: compliant / partially compliant / non-compliant, and explain why.
+Note: Base your assessment on general knowledge of these policies as of 2025–2026.
+Always recommend the researcher verify against the current policy at the source.
+────────────────────────────────────────────────────────────────────────
+
+DESIGN RATIONALE:
+The explicit instruction to recommend verification against the source policy is
+essential. AI policy knowledge has a training cutoff and policies are changing
+rapidly. The compliance assessment is a starting point, not a legal opinion.
+
+KNOWN FAILURE MODES:
+- The model's knowledge of specific journal policies may be outdated.
+- The model may assess compliance against the general policy rather than the
+  specific requirements of the target journal within a publisher's portfolio.
+
+VERIFICATION STEP:
+Always verify against the current policy URL for your specific journal or funder.
+Do not rely on this assessment for submission decisions.
